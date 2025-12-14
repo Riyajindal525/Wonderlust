@@ -21,7 +21,21 @@
   <!-- Rating CSS -->
   <link rel="stylesheet" href="/css/rating.css">
 
-  
+  <style>
+  html, body {
+    height: 100%;
+  }
+
+  body {
+    display: flex;
+    flex-direction: column;
+  }
+
+  main {
+    flex: 1;
+  }
+</style>
+
   <!-- Mapbox -->
   <link href="https://api.mapbox.com/mapbox-gl-js/v3.17.0-beta.1/mapbox-gl.css" rel="stylesheet">
   <script src="https://api.mapbox.com/mapbox-gl-js/v3.17.0-beta.1/mapbox-gl.js"></script>
@@ -42,8 +56,11 @@
   <!-- Flash Messages -->
   <%- include("../includes/flash") %>
 
-  <!-- Page Content -->
+ <!-- Page Content -->
+<main>
   <%- body %>
+</main>
+
 
   <!-- Footer -->
   <%- include("../includes/footer") %>

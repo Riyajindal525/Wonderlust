@@ -1,6 +1,6 @@
 <% layout("layouts/boilerplate") %>
 
-<body>
+
   <div class="container my-5">
     <h2 class="text-center mb-4">Login</h2>
 
@@ -21,6 +21,7 @@
         <div class="invalid-feedback">Please enter a username.</div>
       </div>
 
+     
       <button type="submit" class="btn btn-primary w-100">Login</button>
     </form>
 
@@ -29,20 +30,4 @@
     </p>
   </div>
 
-  <script>
-    // Bootstrap validation
-    (function () {
-      'use strict'
-      const forms = document.querySelectorAll('.needs-validation')
-      Array.from(forms).forEach(form => {
-        form.addEventListener('submit', event => {
-          if (!form.checkValidity()) {
-            event.preventDefault()
-            event.stopPropagation()
-          }
-          form.classList.add('was-validated')
-        }, false)
-      })
-    })()
-  </script>
-</body>
+  

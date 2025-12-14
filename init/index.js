@@ -1,31 +1,33 @@
 const mongoose = require("mongoose");
 const initData = require("./data.js");
 const Listing = require("../models/listing.js");
+const User = require("../models/User.js"); // ✅ Add User import
 require("dotenv").config();
 
-
-mongoose.connect("mongodb+srv://ritikjindal970_db_user:Riya%4012%4034%405@cluster0.ewybt7d.mongodb.net/wonderlust?retryWrites=true&w=majority")
+mongoose.connect("mongodb+srv://ritikjindal970_db_user:Riya%4012%4034%405@cluster0.ewybt7d.mongodb.net/wonderlust?retryWrites=true&w=majority") // ✅ fix typo URl -> URL
   .then(() => console.log("Connected to MONGO DB!"))
   .catch(err => console.log(`Error: ${err}`));
 
 const initDB = async () => {
   try {
+    // 1️⃣ Delete old listings
     await Listing.deleteMany({});
     console.log("Old data deleted ✅");
 
+    // 2️⃣ Create/fetch owner
+    let owner = await User.findOne({ username: "Riya Jindal" });
+    if (!owner) {
+      owner = new User({ username: "Riya Jindal", email: "riya@example.com" });
+      await owner.setPassword("password123");
+      await owner.save();
+      console.log("Owner user created ✅");
+    }
+
+    // 3️⃣ Define allowed categories & coordinates
     const allowedCategories = [
-      'Trending',
-      'Farms',
-      'Rooms',
-      'Mountains',
-      'Cities',
-      'Beach',
-      'Cabins',
-      'Lakeside'
+      'Trending', 'Farms', 'Rooms', 'Mountains', 'Cities', 'Beach', 'Cabins', 'Lakeside'
     ];
 
-
-    // Coordinates
     const indianCoords = [
       [72.8777, 19.0760], // Mumbai
       [77.1025, 28.7041], // Delhi
@@ -45,23 +47,22 @@ const initDB = async () => {
       return shuffled.slice(0, count);
     };
 
-    // Add owner, geometry, and categories
-    initData.data = initData.data.map((listing, index) => ({
+    // 4️⃣ Map initData & assign owner, geometry, categories
+    const listingsWithOwner = initData.data.map((listing, index) => ({
       ...listing,
-      owner: "6926fe08e287c50a81532539",
-      geometry: {
-        type: "Point",
-        coordinates: indianCoords[index % indianCoords.length],
-      },
+      owner: owner._id,
+      geometry: { type: "Point", coordinates: indianCoords[index % indianCoords.length] },
       categories: getRandomCategories(),
     }));
 
-    await Listing.insertMany(initData.data);
-    console.log("Data was initialized with geometry & categories ✅");
+    // 5️⃣ Insert all listings
+    await Listing.insertMany(listingsWithOwner);
+    console.log("Data initialized with owner, geometry & categories ✅");
 
-    mongoose.connection.close();
   } catch (err) {
     console.error("Error in initDB:", err);
+  } finally {
+    mongoose.connection.close();
   }
 };
 

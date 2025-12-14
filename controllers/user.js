@@ -56,6 +56,7 @@ module.exports.login = async (req, res, next) => {
         return res.redirect("/login");
     }
 };
+
 // Logout Logic
 module.exports.logout = (req, res) => {
     req.logout((err) => {
