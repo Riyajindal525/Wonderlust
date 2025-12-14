@@ -1,0 +1,207 @@
+<% layout("layouts/boilerplate") %>
+  <style>
+    .tax-info {
+
+      font-weight: 300;
+      display: none;
+    }
+
+    #flexSwitchCheckDefault:checked {
+      background-color: #ff385c;
+      /* Red background for the slider */
+      border-color: #ff385c;
+    }
+
+    /* Optional: make the knob white */
+    #flexSwitchCheckDefault:checked::before {
+      background-color: white;
+    }
+
+    /* Optional: add a smooth transition */
+    #flexSwitchCheckDefault {
+      transition: all 0.3s;
+    }
+    @media (max-width :830px){
+      .label-tax{
+        font-size: 11px;
+      }
+
+    }
+    @media (max-width: 768px) {
+  .options-filter {
+    gap: 20px !important;
+    justify-content: flex-start !important;
+    scrollbar-width: none; /* Firefox */
+    height : 45px;
+  }
+   .options-filter::-webkit-scrollbar {
+  display: none; /* Chrome, Safari */
+}
+.container-fluid{
+  padding: 0 0 0 0;
+}
+}
+
+@media (max-width: 480px) {
+  .options-filter {
+    display : grid;
+    scrollbar-width: none; /* Firefox */
+     
+  }
+
+  .filter-item i {
+    font-size: 1rem !important;
+  }
+
+  .filter-item p {
+    font-size: 0.7rem !important;
+  }
+
+  .text-switch {
+    width: 200px !important;
+    margin: auto;
+    margin-top: 10px;
+  }
+  .options-filter::-webkit-scrollbar {
+  display: none; /* Chrome, Safari */
+}
+ .label-tax{
+        font-size: 6px;
+      }
+}
+
+   
+  </style>
+
+  <body>
+
+    <!-- Filter Category Bar -->
+    <div class="container-fluid bg-white py-2" style="margin-top: 0px;">
+      <div class="d-flex flex-nowrap overflow-auto align-items-center px-3 width-100 options-filter"
+
+        style="margin-top:10px;">
+
+        <a href="/listings/categories?category=Trending" class="filter-item text-center"
+          style="text-decoration: none; color: black;">
+          <i class="fas fa-fire fs-5"></i>
+          <p class="small mb-0">Trending</p>
+        </a>
+
+        <a href="/listings/categories?category=Farms" class="filter-item text-center"
+          style="text-decoration: none; color: black;">
+          <i class="fas fa-tractor fs-5"></i>
+          <p class="small mb-0">Farms</p>
+        </a>
+
+        <a href="/listings/categories?category=Rooms" class="filter-item text-center"
+          style="text-decoration: none; color: black;">
+          <i class="fas fa-bed fs-5"></i>
+          <p class="small mb-0">Rooms</p>
+        </a>
+
+        <a href="/listings/categories?category=Views" class="filter-item text-center"
+          style="text-decoration: none; color: black;">
+          <i class="fas fa-mountain fs-5"></i>
+          <p class="small mb-0">Views</p>
+        </a>
+
+        <a href="/listings/categories?category=Cities" class="filter-item text-center"
+          style="text-decoration: none; color: black;">
+          <i class="fas fa-landmark fs-5"></i>
+          <p class="small mb-0">Cities</p>
+        </a>
+
+        <a href="/listings/categories?category=Beach" class="filter-item text-center"
+          style="text-decoration: none; color: black;">
+          <i class="fas fa-umbrella-beach fs-5"></i>
+          <p class="small mb-0">Beach</p>
+        </a>
+
+        <a href="/listings/categories?category=Cabins" class="filter-item text-center"
+          style="text-decoration: none; color: black;">
+          <i class="fas fa-home fs-5"></i>
+          <p class="small mb-0">Cabins</p>
+        </a>
+
+        <a href="/listings/categories?category=Lakeside" class="filter-item text-center"
+          style="text-decoration: none; color: black;">
+          <i class="fas fa-water fs-5"></i>
+          <p class="small mb-0">Lakeside</p>
+        </a>
+
+        <a href="/listings/categories?category=Mountains" class="filter-item text-center"
+          style="text-decoration: none; color: black;">
+          <i class="fas fa-mountain fs-5"></i>
+          <p class="small mb-0">Mountains</p>
+        </a>
+
+       <div class='text-switch border rounded p-2' style=" height : 40px !important;
+  width : 250px !important;">
+        <div class="form-check form-switch reverse ">
+          <label class="form-check-label label-tax" for="flexSwitchCheckDefault">Display After tax!</label>
+          <input class="form-check-input" type="checkbox" role="switch" id="flexSwitchCheckDefault" style="color : red">
+
+        </div>
+      </div>
+
+      </div>
+
+      
+
+
+
+    </div>
+    </div>
+
+    <!-- Listings Grid -->
+    <div style="max-width: 100%;" id="box">
+      <div style="display: flex; flex-wrap: wrap; gap: 20px; justify-content: space-evenly; margin-top: 10px;">
+
+        <% allListings.forEach(listing=> { %>
+          <!-- Entire card is clickable -->
+          <a href="/listings/<%= listing._id %>" style="text-decoration: none; color: inherit;">
+            <div class="listing-card"
+              style="border: 1px solid #ccc; border-radius: 8px; width: 345px; overflow: hidden; transition: transform 0.3s, box-shadow 0.3s;">
+
+              <% if (listing.image && listing.image.url) { %>
+                <img src="<%= listing.image.url %>" alt="Listing Image"
+                  style="width:100%; height:250px; object-fit:cover;">
+                <% } else { %>
+                  <img src="https://via.placeholder.com/250x150?text=No+Image" alt="No Image"
+                    style="width:100%; height:150px; object-fit:cover;">
+                  <% } %>
+
+                    <div style="padding: 15px; text-align: left;">
+                      <h4 style="margin: 0 0 10px 0;">
+                        <%= listing.title %>
+                      </h4>
+                      <p style="margin: 0 0 5px;"><strong>Price:</strong> ₹<%= listing.price %>
+                      </p>
+                      <i class="tax-info">18% GST</i>
+                      <p style="margin: 0 0 5px;"><strong>Location:</strong>
+                        <%= listing.location %>, <%= listing.country %>
+                      </p>
+                    </div>
+
+            </div>
+          </a>
+          <% }) %>
+
+      </div>
+    </div>
+
+
+    <script>
+      let taxSwitch = document.getElementById('flexSwitchCheckDefault');
+      taxSwitch.addEventListener('change', () => {
+        let taxInfoElement = document.querySelectorAll('.tax-info');
+        for (info of taxInfoElement) {
+          if (taxSwitch.checked) {
+            info.style.display = 'block';
+          } else {
+            info.style.display = 'none';
+          }
+        }
+      });
+    </script>
+  </body>
